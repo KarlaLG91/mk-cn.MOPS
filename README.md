@@ -26,7 +26,9 @@ cn.mops models the depths of coverage across samples at each genomic position. T
 
 This tool converted each input BAM file into read count matrices for each sample and the targeted regions needed to be specified using a bait file. Consequently, the program partitioned the genome into segments and consider the read counts at a segment to build a model across all samples. 
 
-As a result of this module a .csv file is created recording the levels of copy number clases (cn).
+As a result of this module a .csv file is created recording the levels of copy number clases (CN). It gives the _Genomic location (chr, start, end)_ and then four metadata columns. These are _SampleName_, _Median_, _Mean_ and _CN_. 
+"_CN_" gives the estimated integer copy number of the CNV. The copy number classes default is CN0, CN1, CN2, CN3, .., CN8. CN2 is the normal copy number for diploid samples. CN1 is a heterozygous deletion and CN0 is a homozygous deletion. CN3 through CN8 are amplifications.
+"_Median_" and "_Mean_" give the median or mean individual high informative/non-informative call (I/NI call) for this copy number segment. The individual I/NI call is something like the expected log foldchange. Log foldchanges are often used in context with copy number detection.
 
 ## Pipeline configuration
 
