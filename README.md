@@ -34,12 +34,13 @@ As a result of this module a .csv file is created recording the levels of copy n
 
 * Input data
 
- Sorted by genome coordinate BAM files 
- BED file for target baits.
+ -Sorted by genome coordinate BAM files 
+ 
+ -BED file for target baits.
  
  * Output data
  
- Files in .csv format including the levels of copy number found for each region.
+Files in .csv format including the levels of copy number found for each region.
 
  ````
 NOTE:  At least 6 samples are recommended for proper parameter estimation. [3]
@@ -107,9 +108,10 @@ mk-cn.MOPS			##Pipeline main directory.
 ## References
 
 \[1\][BAM format](https://genome.sph.umich.edu/wiki/BAM) 
-\[2\][BED format](https://genome.ucsc.edu/FAQ/FAQformat.html#format1) 
-\[3\][cn.MOPS algorithm](https://academic.oup.com/nar/article/40/9/e69/1136601) 
 
+\[2\][BED format](https://genome.ucsc.edu/FAQ/FAQformat.html#format1) 
+
+\[3\][cn.MOPS algorithm](https://academic.oup.com/nar/article/40/9/e69/1136601) 
 
 
 
