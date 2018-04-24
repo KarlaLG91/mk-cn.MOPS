@@ -1,0 +1,10 @@
+#!/bin/bash
+
+##The first function of bin/create_targets is to find in data/ all the directories  with the name "*_cnmops".
+##The second function is manipulate the NAME of the directories, to generate the targets that are going to be asked by mkfile.
+find -L data/ \
+	-type d \
+	-name "*_cnmops" \
+| sed \
+	-e "s#data/#results/#" \
+	-e "s#_cnmops#_cnmops/cnv_results.csv#"
