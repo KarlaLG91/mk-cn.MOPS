@@ -1,10 +1,13 @@
 # mk-cn.MOPS - Pipeline for CNV detection in targeted NGS data (Illumina)
 
-###Abbreviations
+### Abbreviations
 
 -**HTS**: Hight-Throughput Sequencing
+
 -**cn.MOPS**: Copy Number estimation by a Mixture Of PoissonS
+
 -**BAM**: Binary Alignment Map
+
 -**CNVs**: Copy Number Variations
 
 ## About mk-alignment
@@ -34,12 +37,15 @@ As a result of this module a .csv file is created recording the levels of copy n
  * Output data
  
  Files in .csv format including the levels of copy number found for each region.
- Plots of the copy number variations found.
- 
+
+ ````
+NOTE:  At least 6 samples are recommended for proper parameter estimation. [2]
+````
+
 ### Software dependencies:
  
  
- * [mk]((https://9fans.github.io/plan9port/man/man1/mk.html "A successor for make.")) 
+ * [mk](https://9fans.github.io/plan9port/man/man1/mk.html "A successor for make.") 
  
  * [cn.MOPS](https://bioconductor.riken.jp/packages/3.0/bioc/html/cn.mops.html "Copy Number estimation by a Mixture Of PoissonS.") 
  
@@ -51,47 +57,42 @@ This pipeline includes a config.mk file (located at mk-cn.MOPS/config.mk, were y
 ````
 
 # Path to targeted regions bed file
- BED_file: Must point to an appropriate .bed file.
+ TARGET_BED: Must point to an appropriate .bed file.
  
  ````
+ 
  
 ### Module parameters
 
 Used by cn.MOPS:
 
 ````
-
-library(cn.mops)
-BAMFiles <- list.files(path="/home/karla/mk-cn.MOPS/data", pattern=".bam$")
-segments <- read.table("/home/karla/mk-cn.MOPS/data/bedfile.bed",sep="\t",as.is=TRUE)
-gr <- GRanges(segments[,1],IRanges(segments[,2],segments[,3]))
-X <- getSegmentReadCountsFromBAM(BAMFiles,GR=gr, mode="paired", BAIFiles=".bai$")
-rgresCNMOPS <- exomecn.mops(X)
-resCNMOPS <- calcIntegerCopyNumbers(resCNMOPS)
-plot(resCNMOPS,which=1)
-CNVs <- as.data.frame(cnvs(resCNMOPS))
-write.csv(CNVs,file="cnvs.csv")
+args = commandArgs(trailingOnly = TRUE)
+library(cn.mops)   ->  Load package
+BAMFiles <- list.files(path= args[1], pattern=".bam$", full.names = TRUE)   ->   Get input data from BAM files.
+segments <- read.table(args[2], sep="\t", as.is=TRUE)   ->  Get segments from BED file.
+gr <- GRanges(segments[,1],IRanges(segments[,2],segments[,3]))  ->  The initial segments in which the reads are counted should be chosen as the regions of the baits, targets or exons established by the BED file.
+X <- getSegmentReadCountsFromBAM(BAMFiles,GR=gr)  ->  The read count matrix is generated. It requires the genomic coordinates of the predefined segments as GRanges object.
+resCNMOPS <- exomecn.mops(X)  ->  run cn.MOPS algorithm.
+resCNMOPS <- calcIntegerCopyNumbers(resCNMOPS)   ->  Calculate integer copy number.
+CNVs <- as.data.frame(cnvs(resCNMOPS))  ->  Extract cnvs results.
+write.csv(CNVs,file= args[3])  ->  Export cnvs results as .csv.
 
 ````
 
 ## mk-cn.MOPS directory structure
 
+
 ````
-
-
-
-
-
-
-
-
 
 
 ````
+
 
 ## References
 
 \[1\][BAM format](https://genome.sph.umich.edu/wiki/BAM) 
+\[2\][cn.MOPS algorithm](https://academic.oup.com/nar/article/40/9/e69/1136601) 
 
 
 
