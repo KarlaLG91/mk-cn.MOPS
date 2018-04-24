@@ -70,7 +70,7 @@ This pipeline includes a config.mk file (located at mk-cn.MOPS/config.mk, were y
  
 ### Module parameters
 
-Used by cn.MOPS:
+Used by cn.MOPS: used by bin/cnmops.R
 
 ````
 args = commandArgs(trailingOnly = TRUE)
@@ -85,6 +85,7 @@ CNVs <- as.data.frame(cnvs(resCNMOPS))  ->  Extract cnvs results.
 write.csv(CNVs,file= args[3])  ->  Export cnvs results as .csv.
 
 ````
+
 
 ## mk-cn.MOPS directory structure
 
