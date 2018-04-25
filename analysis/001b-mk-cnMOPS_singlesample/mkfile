@@ -7,7 +7,7 @@
 ##	`mk <SPECIFIC_TARGET>`; where SPECIFIC_TARGET is any line printed by the `/bin/create_targets` script in this module.
 ##
 ## Alternative 2: Multiple target tandem execution.
-##	`bin/targets | xargs mk` 
+##	`bin/create_targets | xargs mk` 
 ##
 ## AUTHOR:
 ##	Karla Lozano (klg1219sh@gmail.com), for Winter Genomics (http://www.wintergenomics.com/) - 2018
@@ -23,7 +23,6 @@ config_variables:V: $TARGET_BED
 	echo "[DEBUGGING] The BED file is in $prereq"
 
 #Identify copy number clases in .csv file format
-#
 results/test_sample/%.cnv_results.csv:: data/test_sample/% 
 	set -x
 	mkdir -p $(dirname $target)
