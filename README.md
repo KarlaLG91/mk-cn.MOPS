@@ -1,8 +1,8 @@
-# mk-cn.MOPS - Pipeline for CNV detection in targeted NGS data (Illumina)
+# mk-cn.MOPS - Pipeline for CNV detection in targeted exome NGS data (Illumina)
 
 ### Abbreviations
 
--**HTS**: Hight-Throughput Sequencing
+-**HTS**: High-Throughput Sequencing
 
 -**cn.MOPS**: Copy Number estimation by a Mixture Of PoissonS
 
@@ -12,11 +12,11 @@
 
 -**CNVs**: Copy Number Variations
 
-## About mk-alignment
+## About mk-cn.MOPS
 
 **Objective:**
 
-This module detects CNVs from sorted BAM files using the cn.MOPS algorithm. The module uses read depth approach to estimate CNVs in multiple samples simultaneously. 
+This module detects CNVs from sorted BAM files using the cn.MOPS algorithm. The module uses read depth approach to estimate CNVs in multiple samples simultaneously (001a-mk-cnMOPS_multisample), as well as individual samples (001b-mk-cnMOPS_singlesample).
 
 ## Module description
 
@@ -24,24 +24,43 @@ This module detects CNVs from sorted BAM files using the cn.MOPS algorithm. The 
 
 cn.mops models the depths of coverage across samples at each genomic position. Thus, preventing read count biases across the chromosomes. It applies a mixture of Poisson model that is able to differentiate between variations caused by copy number and variations caused by noise. Since a mixture of Poisson model is created for each genomic position, there is no interference in the results due to read count biases across the entire chromosome. Furthermore, a Bayesian approach is used to determine integer copy numbers based on read variations across samples based on its mixture components. The model set a constant copy number of 2 for all samples and uses the lineal relation between copy numbers and read counts to elucidate any trend that moves further away from the posterior probability expected. The Poisson distribution accounts for background noise and the model assumes that read counts in a segment are similarly distributed across all samples. A CNV is called when there is a deviation across samples  in a number of consecutive segments along a chromosome. [3]
 
-This tool converted each input BAM file into read count matrices for each sample and the targeted regions needed to be specified using a bait file. Consequently, the program partitioned the genome into segments and consider the read counts at a segment to build a model across all samples. 
-
-As a result of this module a .csv file is created recording the levels of copy number clases (CN). It gives the _Genomic location (chr, start, end)_ and then four metadata columns. These are _SampleName_, _Median_, _Mean_ and _CN_. 
-"_CN_" gives the estimated integer copy number of the CNV. The copy number classes default is CN0, CN1, CN2, CN3, .., CN8. CN2 is the normal copy number for diploid samples. CN1 is a heterozygous deletion and CN0 is a homozygous deletion. CN3 through CN8 are amplifications.
-"_Median_" and "_Mean_" give the median or mean individual high informative/non-informative call (I/NI call) for this copy number segment. The individual I/NI call is something like the expected log foldchange. Log foldchanges are often used in context with copy number detection.
-
 ````
 IMPORTANT NOTE:
 
 cn.MOPS is reported to not be suitable for single sample analysis. The reason for this is that, the algorithm differentiates variations along samples whether they are copy numbers or noise. The quality of this discrimination increases with the number of samples. [3]
 However, the package offers a single sample analysis command `singlecn.mops`. [4]
-During the development of this module, said command was tested. The results obtained turned out to be dissimilar when compared to the results obtained through multi-sample analysis.
+During the development of this module said command was tested. 
+The results obtained turned out to be dissimilar when compared to the results obtained through multi-sample analysis.
 
 ````
+cn.MOPS installation instructions can be found at: 
+[https://bioconductor.org/packages/release/bioc/html/cn.mops.html](https://bioconductor.org/packages/release/bioc/html/cn.mops.html) 
+
+cn.MOPS publication can be found at: [Klambauer G, Schwarzbauer K, Mayr A, Mitterecker A, Clevert D, Bodenhofer U and Hochreiter S (2012). “cn.MOPS: Mixture of Poissons for Discovering Copy Number Variations in Next Generation Sequencing Data with a Low False Discovery Rate.” Nucleic Acids Research, 40, pp. e69. doi: 10.1093/nar/gks003]
+
+## Submodules descriptions
+
+**- 001a-mk-cnMOPS_multisample**
+
+In this module cn.MOPS converted each input BAM file into read count matrices for each sample and specified the targeted regions needed using a BED file. Consequently, the program partitioned the genome into segments and consider the read counts at each segment to build a model across all samples. The algorith uses de linear relation between read counts and copy number to determine CNVs. 
+
+As a result of this module a .csv file is created recording the levels of copy number clases (CN) of all samples. It gives the _Genomic location (chr, start, end)_ and then four metadata columns. These are _SampleName_, _Median_, _Mean_ and _CN_. 
+"_CN_" gives the estimated integer copy number of the CNV. The copy number classes default is CN0, CN1, CN2, CN3, .., CN8. CN2 is the normal copy number for diploid samples. CN1 is a heterozygous deletion and CN0 is a homozygous deletion. CN3 through CN8 are amplifications.
+"_Median_" and "_Mean_" give the median or mean individual high informative/non-informative call (I/NI call) for this copy number segment. The individual I/NI call is something like the expected log foldchange. Log foldchanges are often used in context with copy number detection.
+
+**- 001b-mk-cnMOPS_singlesample**
+
+In this module cn.MOPS converted each input BAM file into read count matrices for each sample and specified the targeted regions needed using a BED file. Consequently, the program partitioned the genome into segments and consider the read counts at each segment to build a model. The algorith uses de linear relation between read counts and copy number to determine CNVs. 
+
+As a result of this module a .csv file is created recording the levels of copy number clases (CN). It gives the _Genomic location (chr, start, end)_ and then four metadata columns. These are _SampleName_, _Median_, _Mean_ and _CN_. 
+"_CN_" gives the estimated integer copy number of the CNV. The copy number classes default is CN0, CN1, CN2, CN3, .., CN8. CN2 is the normal copy number for diploid samples. CN1 is a heterozygous deletion and CN0 is a homozygous deletion. CN3 through CN8 are amplifications.
+"_Median_" and "_Mean_" give the median or mean individual high informative/non-informative call (I/NI call) for this copy number segment. The individual I/NI call is something like the expected log foldchange. Log foldchanges are often used in context with copy number detection.
 
 ## Pipeline configuration
 
-### Data formats:
+#### 001a-mk-cnMOPS_multisample
+
+**Data formats:**
 
 * Input data
 
@@ -51,11 +70,26 @@ During the development of this module, said command was tested. The results obta
  
  * Output data
  
-Files in .csv format including the levels of copy number found for each region.
+Files in .csv format including the levels of copy number found for each region for all samples.
 
  ````
 NOTE:  At least 6 samples are recommended for proper parameter estimation. [3]
 ````
+
+#### 001b-mk-cnMOPS_singlesample
+
+**Data formats:**
+
+* Input data
+
+ -Sorted by genome coordinate BAM files 
+ 
+ -BED file for target baits.
+ 
+ * Output data
+ 
+Files in .csv format including the levels of copy number found for each region for every sample.
+
 
 ### Software dependencies:
  
@@ -64,58 +98,38 @@ NOTE:  At least 6 samples are recommended for proper parameter estimation. [3]
  
  * [cn.MOPS](https://bioconductor.riken.jp/packages/3.0/bioc/html/cn.mops.html "Copy Number estimation by a Mixture Of PoissonS.") 
  
- 
+
 ### Configuration file
 
-This pipeline includes a config.mk file (located at mk-cn.MOPS/config.mk, were you can adjust the following parameters:
+This pipeline includes config.mk files (located at every submodule under analysis/SUBMODULE/), where you can adjust several parameters.
 
-````
-
-# Path to targeted regions bed file
- TARGET_BED: Must point to an appropriate BED file.
+Every config.mk file is independent. Please keep it in mind.
  
- ````
- 
- 
-### Module parameters
+### Reference files
 
-Used by cn.MOPS: used by bin/cnmops.R
+Under the test_reference/ directory, we provide some files needed for test-runs.
 
-````
-args = commandArgs(trailingOnly = TRUE)
-library(cn.mops)   ->  Load package
-BAMFiles <- list.files(path= args[1], pattern=".bam$", full.names = TRUE)   ->   Get input data from BAM files.
-BEDFile <- read.table(args[2], sep="\t", as.is=TRUE)   ->  Get segments from BED file.
-genomic_ranges <- GRanges(BEDFile[,1],IRanges(BEDFile[,2],BEDFile[,3]))  ->  The initial segments in which the reads are counted should be chosen as the regions of the baits, targets or exons established by the BED file.
-Read_counts <- getSegmentReadCountsFromBAM(BAMFiles,GR=genomic_ranges) ->  The read count matrix is generated. It requires the genomic coordinates of the predefined segments as GRanges object.
-resCNMOPS <- exomecn.mops(Read_counts)  ->  run cn.MOPS algorithm.
-IntegerCN <- calcIntegerCopyNumbers(resCNMOPS)   ->  Calculate integer copy number.
-CNVs <- as.data.frame(cnvs(IntegerCN))  ->  Extract cnvs results.
-write.table(CNVs,file= args[3], quote=FALSE, sep= "\t", row.names=FALSE  ->  Export cnvs results as tab delimited file.
-
-````
-
+* Genome target regions: BED files where the first column is a chromosome (e.g. "1"), the second and third columns are start and end position of a region, respectively. BED files must end with the suffix ".bed".
 
 ## mk-cn.MOPS directory structure
 
 
 ````
 mk-cn.MOPS			##Pipeline main directory.
-├── bin				##Executables directory.
-│   ├── cnmops.R		##Script to run cn.MOPS.
-│   └── create_targets	##Script to print every directory required by this module.
-├── config.mk			##Configuration file for this module.
-├── data				##Directory for sample data
-│   └── test_cnmops	##Directory containing a minimum of 6 samples for cn.MOPS analisis. Must follow the following naming condition, "*_cnmops".
-│       ├── 01-130529-TM_S1.GATK.realigned.recal.bam	##Example of BAM file.
-│       └── 01-130529-TM_S1.GATK.realigned.recal.bam.bai	##Example of index file of the corresponding BAM file.
-├── mkfile			##File in mk format, specifying the rules for building every result requested by bin/create_targets.
+├── analysis			## Directory for submodule organization.
+│   ├── 001a-mk-cnMOPS_multisample		##Submodule for CNV detection in multiple samples.
+│   └── 001b-mk-cnMOPS_singlesample	####Submodule for CNV detection in single samples.
 ├── notes			##Notes about proper execution of modules.
-│   └── mk-cnMOPS.md	##Notes for module execution.
+│   ├── mk-cnMOPS_multisample.md		##Notes for module execution.
+│   └── mk-cnMOPS_singlesample.md		##Notes for module execution.
 ├── README.md		##This document. General workflow description.
-├── reference			##Directory for reference files used by the module
-│       └── 039970_D_BED_20120404_pad50.bed	##Exampe of BED file.
-└── results			##Storage directory for files built by mkfile. If it does not exist, it is automatically generated by mkfile.
+└── test				##Directory for data required for running tests in the module.
+    ├── test_data		##Directory for data files used by the module.
+    │   └── test_sample	##Directory with sample BAM files for test run.
+    │       ├── 06-130529-DH_S1.GATK.realigned.recal.bam	##Example of BAM file.
+    │       └── 06-130529-DH_S1.GATK.realigned.recal.bam.bai	##Example of index file of the corresponding BAM file.
+    └── test_reference	##Directory for reference files used by the module.
+              └── 039970_D_BED_20120404_pad50.bed	##Exampe of BED file.
 
 ````
 
