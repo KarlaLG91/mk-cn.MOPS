@@ -24,7 +24,7 @@ config_variables:V: $TARGET_BED
 
 #Identify copy number clases in .csv file format
 #
-results/%_cnmops/cnv_results.csv:: data/%_cnmops/ 
+results/%_cnmops/cnv_results.csv:: data/%_cnmops 
 	set -x
 	mkdir -p $(dirname $target)
 	Rscript --vanilla bin/cnmops.R $prereq $TARGET_BED $target.build \
