@@ -3,3 +3,5 @@
 *data/* 
 # for results as directory
 *results/*
+# for test_data as directory
+*test_data/*
