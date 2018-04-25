@@ -30,7 +30,14 @@ As a result of this module a .csv file is created recording the levels of copy n
 "_CN_" gives the estimated integer copy number of the CNV. The copy number classes default is CN0, CN1, CN2, CN3, .., CN8. CN2 is the normal copy number for diploid samples. CN1 is a heterozygous deletion and CN0 is a homozygous deletion. CN3 through CN8 are amplifications.
 "_Median_" and "_Mean_" give the median or mean individual high informative/non-informative call (I/NI call) for this copy number segment. The individual I/NI call is something like the expected log foldchange. Log foldchanges are often used in context with copy number detection.
 
+````
+IMPORTANT NOTE:
 
+cn.MOPS is reported to not be suitable for single sample analysis. The reason for this is that, the algorithm differentiates variations along samples whether they are copy numbers or noise. The quality of this discrimination increases with the number of samples. [3]
+However, the package offers a single sample analysis command `singlecn.mops`. [4]
+During the development of this module, said command was tested. The results obtained turned out to be dissimilar when compared to the results obtained through multi-sample analysis.
+
+````
 
 ## Pipeline configuration
 
@@ -121,7 +128,7 @@ mk-cn.MOPS			##Pipeline main directory.
 
 \[3\][cn.MOPS algorithm](https://academic.oup.com/nar/article/40/9/e69/1136601) 
 
-
+\[4\][cn.MOPS manual](https://www.bioconductor.org/packages/3.7/bioc/manuals/cn.mops/man/cn.mops.pdf) 
 
 #### Author info
 Developed by Karla Lozano (klg1219sh@gmail.com) for [Winter Genomics](http://www.wintergenomics.com/) 2018.
