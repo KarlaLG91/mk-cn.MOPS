@@ -1,0 +1,14 @@
+#!/bin/bash
+##
+## DESCRIPTION:
+##	Script to print required mk targets to STDOUT.
+## USAGE: 
+##	bin/create_targets
+
+# Generate targets for directories containing BAM files to be analised using cn.MOPS.
+find -L data/ \
+	-mindepth 1 \
+	-type d \
+| sed \
+	-e "s#data/#results/#" \
+	-e "s#\$#.cnv_results.csv#"
