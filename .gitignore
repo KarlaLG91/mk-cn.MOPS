@@ -1,0 +1,9 @@
+## Here can be added paths that will not be versioned by git.
+# for data as directory
+*data/* 
+# for results as directory
+*results/*
+# for bed file
+*test/test_reference/039970_D_BED_20120404_pad50.bed
+# for bam y bai files
+test/test_data/test_sample/
