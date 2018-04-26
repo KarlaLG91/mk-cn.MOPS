@@ -22,3 +22,5 @@ results/
 * The module uses read depth approach to estimate CNVs in multiple samples simultaneously using the cn.MOPS algorithm.
 
 * A .csv file is generated recording the levels of copy number clases (CN) for each sample. It gives the _Genomic location (chr, start, end)_ and then four metadata columns. These are _SampleName_, _Median_, _Mean_ and _CN_. 
+
+* NOTE:  At least 6 samples are recommended for proper parameter estimation. Following the recommendations from the package creator.
