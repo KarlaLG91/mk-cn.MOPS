@@ -4,8 +4,6 @@
 # for results as directory
 *results/*
 # for bed file
-*test/test_reference/039970_D_BED_20120404_pad50.bed*
+*test/test_reference/039970_D_BED_20120404_pad50.bed
 # for bam y bai files
-*test/test_data/test_sample/*.bam*
-*test/test_data/test_sample/*.bai*
-
+test/test_data/test_sample/
