@@ -1,5 +1,5 @@
 ## DESCRIPTION:
-## mk module for the detection of Copy Number Variations in single samples, using BAM type of data and a BED file to establish targeted regions. 
+## mk module for the detection of Copy Number Variations in single samples, using BAM type of data and a BED file to establish targeted regions.
 ## The script uses Copy Number estimation by a Mixture Of PoissonS (cn.MOPS) to detect copy number clases (CN) from a BAM file, defining segments using a BED file.
 ## 
 ## USAGE:
@@ -17,13 +17,9 @@ MKSHELL=/bin/bash
 # Load configurations from file
 < config.mk
 
-## An example of what happens with the variables set by config.mk
-##FOR DEV PURPOSES
-config_variables:V: $TARGET_BED
-	echo "[DEBUGGING] The BED file is in $prereq"
-
 #Identify copy number clases in .csv file format
-results/test_sample/%.cnv_results.csv:: data/test_sample/% 
+#
+results/%.cnv_results.csv:: data/%.bam
 	set -x
 	mkdir -p $(dirname $target)
 	Rscript --vanilla bin/cnmops.R $prereq $TARGET_BED $target.build \
