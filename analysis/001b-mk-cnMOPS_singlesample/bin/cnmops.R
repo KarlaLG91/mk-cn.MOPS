@@ -5,9 +5,10 @@
 ##
 ## USAGE:
 ## This R script is called by the mkfile of this module with the following command:
-##	`Rscript --vanilla bin/cnmops.R <SPECIFIC _ARGUMENT_1> <SPECIFIC _ARGUMENT_2> <SPECIFIC _ARGUMENT_3>`;
-##		where SPECIFIC _ARGUMENT_1 is a BAM file found in data/test_sample,
-##		SPECIFIC _ARGUMENT_2 is the variable $TARGET_BED found in the `config.mk` file in this module, and SPECIFIC _ARGUMENT_3 is any line printed by the `/bin/create_targets` script in this module.
+##	`Rscript --vanilla bin/cnmops.R <BAM files> <BED file> <Output file>`; 
+##					where <BAM files> is a BAM file found in data/test_sample, 
+##					<BED file> is the variable $TARGET_BED found in the `config.mk` file in this module, 
+##					and <Output file> is any line printed by the `/bin/create_targets` script in this module.
 ## 
 ## AUTHOR:
 ##      Karla Lozano (klg1219sh@gmail.com), for Winter Genomics (http://www.wintergenomics.com/) - 2018
@@ -22,7 +23,7 @@ library(cn.mops)
 
 # Loading BAM files
 #
-BAMFiles <- (file=args[1])
+BAMFiles <- (file= args[1])
 
 # Loading BED file
 #
