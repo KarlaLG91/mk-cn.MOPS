@@ -5,7 +5,10 @@
 ##
 ## USAGE:
 ## This R script is called by the mkfile of this module with the following command:
-##	`Rscript --vanilla bin/cnmops.R <SPECIFIC _ARGUMENT_1> <SPECIFIC _ARGUMENT_2> <SPECIFIC _ARGUMENT_3>`; where SPECIFIC _ARGUMENT_1 is the path to any directory named "*_cnmops" found in data/, SPECIFIC _ARGUMENT_2 is the variable $TARGET_BED found in the `config.mk` file in this module, and SPECIFIC _ARGUMENT_3 is any line printed by the `/bin/create_targets` script in this module.
+##	`Rscript --vanilla bin/cnmops.R <Path to BAM files> <BED file> <Output file>`; 
+##					where <Path to BAM files> is the path to any directory found in data/, 
+##					<BED file> is the variable $TARGET_BED found in the `config.mk` file in this module, 
+##					and <Output file> is any line printed by the `/bin/create_targets` script in this module.
 ## 
 ## AUTHOR:
 ##      Karla Lozano (klg1219sh@gmail.com), for Winter Genomics (http://www.wintergenomics.com/) - 2018

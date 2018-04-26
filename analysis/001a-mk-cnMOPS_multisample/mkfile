@@ -17,14 +17,9 @@ MKSHELL=/bin/bash
 # Load configurations from file
 < config.mk
 
-## An example of what happens with the variables set by config.mk
-##FOR DEV PURPOSES
-config_variables:V: $TARGET_BED
-	echo "[DEBUGGING] The BED file is in $prereq"
-
 #Identify copy number clases in .csv file format
 #
-results/%.cnv_results.csv:: data/% 
+results/%.cnv_results.csv:: data/%
 	set -x
 	mkdir -p $(dirname $target)
 	Rscript --vanilla bin/cnmops.R $prereq $TARGET_BED $target.build \
