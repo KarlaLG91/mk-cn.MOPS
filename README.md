@@ -1,4 +1,4 @@
-# mk-cn.MOPS - Pipeline for CNV detection in targeted exome NGS data (Illumina)
+# mk-cn.MOPS - Pipeline for CNV detection in targeted exome NGS data.
 
 ### Abbreviations
 
